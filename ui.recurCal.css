@@ -1,0 +1,70 @@
+.recurCal-main div
+{
+    border: none;
+}
+
+.recurCal-dateInput div
+{
+    float: left;
+    display: inline;
+    margin: 15px 0 0 25px;
+}
+
+.recurCal-picker 
+{ 
+    float: left;
+    display: inline;
+    position: relative;
+}
+
+.recurCal-picker div
+{
+    height: 25px;
+    margin: 0 auto;
+    width: 115px;
+    
+}
+
+.recurCal-picker div input
+{ 
+    margin: 0 10px;
+}
+
+#recurCalAfter {
+    margin: 10px 0 0 215px;
+}
+
+.recurCal-display 
+{
+    float: left;
+    display: inline;
+    position: relative;
+}
+
+.recurCal-display select {
+    width: auto;
+}
+
+.recurCal-display div
+{
+    height: 25px;
+    margin: 0 auto;
+}
+
+.smInput
+{
+    width: 30px;
+    margin: 0 15px;
+}
+
+.dayList
+{
+    list-style-type: none;
+}
+
+.dayList li
+{
+    float: left;
+    display: inline;
+    width: 125px;
+}

@@ -1,0 +1,194 @@
+<html>
+<head>
+<meta http-equiv="x-ua-compatible" content="IE=8">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<!--link  rel="stylesheet" type="text/css" href='../../css/dark-hive/jquery-ui.css'/-->
+<!--link  rel="stylesheet" type="text/css" href='../themes/base/jquery.ui.all.css'/-->
+<link  rel="stylesheet" type="text/css" href='../themes/smoothness/jquery-ui.css'/>
+<link  rel="stylesheet" type="text/css" href='../validation/validationEngine.jquery.css'/>
+<link  rel="stylesheet" type="text/css" href='ui.recurCal.css'/>
+</head>
+<body>
+<div id='recurrance'>
+
+</div>
+<div style='clear: both;'>
+<span style='float:left;'>
+    <button type='button' onclick='getVal()'>Value</button>
+    <br/>
+    <button type='button' onclick='fetch("value")'>Show</button>
+    <br/>
+    <button type='button' onclick='clearAll()'>Clear</button>
+</span>
+<textarea id='testing' style='width:637px;height:400px;resizable:true;'></textarea>
+</div>
+<div>
+<button type='button' onclick='test("daily")'>Daily</button>
+<button type='button' onclick='test("weekly")'>Weekly</button>
+<button type='button' onclick='test("monthly")'>Monthly</button>
+<button type='button' onclick='test("monthly2")'>Monthly 2</button>
+<button type='button' onclick='test("yearly")'>Yearly</button>
+<button type='button' onclick='test("yearly2")'>Yearly 2</button>
+<button type='button' onclick='test("test")'>test</button>
+</div>
+
+<div>
+Set the dates below, and click a Get button, this will return all events between the chosen dates
+</div>
+<button type='button' onclick='Month()'>Month</button>
+Begin: <input type='text' id='begin' class="datetimepicker ui-widget ui-widget-content ui-corner-all"/>
+ End: <input type='text' id='end' class="datetimepicker ui-widget ui-widget-content ui-corner-all"/>
+<div>
+<button type='button' onclick='fetch("daily")'>Get Daily</button>
+<button type='button' onclick='fetch("weekly")'>Get Weekly</button>
+<button type='button' onclick='fetch("monthly")'>Get Monthly</button>
+<button type='button' onclick='fetch("monthly2")'>Get Monthly 2</button>
+<button type='button' onclick='fetch("yearly")'>Get Yearly</button>
+<button type='button' onclick='fetch("yearly2")'>Get Yearly 2</button>
+<button type='button' onclick='fetch("test")'>test</button>
+</div>
+<script src='../jquery-1.7.2.min.js'></script>
+<script src='../ui/jquery-ui-1.8.14.custom.js'></script>
+<script src='../ui/jquery.ui.core.js'></script>
+<script src='../ui/jquery.ui.widget.js'></script>
+<script src='../ui/jquery-ui-timepicker-addon.js'></script>
+<script src='jquery.ui.recurCal.js'></script>
+<script>
+
+$(document).ready(function() 
+{
+    $('#recurrance').recurCal();
+    var startDateTextBox1 = $( "#begin" ); 
+    var endDateTextBox1 = $( "#end" );
+
+    startDateTextBox1.datetimepicker({ 
+        onClose: function(dateText, inst) {
+            if (endDateTextBox1.val() != '') 
+            {
+                var testEndDate = endDateTextBox1.datetimepicker('getDate');
+            }
+            var testStartDate = startDateTextBox1.datetimepicker('getDate');
+            if (endDateTextBox1.val() == '' || testStartDate >= testEndDate)
+            {
+                var newDate = new Date();
+                newDate.setTime(testStartDate - (-60000) );
+                endDateTextBox1.datetimepicker('setDate', newDate);
+            }
+            
+        },
+        dateFormat: 'yy-mm-dd',
+        hourGrid: 3,
+        minuteGrid: 15
+    });
+    endDateTextBox1.datetimepicker({ 
+        onClose: function(dateText, inst) {
+            if (startDateTextBox1.val() != '') {
+                var testStartDate = startDateTextBox1.datetimepicker('getDate');
+            }
+            var testEndDate = endDateTextBox1.datetimepicker('getDate');
+            if (startDateTextBox1.val() == '' || testStartDate >= testEndDate)
+            {
+                var newDate = new Date();
+                newDate.setTime(testEndDate-60000);
+                startDateTextBox1.datetimepicker('setDate', newDate);
+            }
+        },
+        dateFormat: 'yy-mm-dd',
+        hourGrid: 3,
+        minuteGrid: 15
+    });        
+    
+    //
+    //$('#recurrance').Recurrance('day', {when : 'next', day : 'tue', start: new Date(), month: 2});
+});
+
+function getVal()
+{
+    $('#testing').val(JSON.stringify($("#recurrance").recurCal("value")));
+}
+
+function clearAll() {
+    $('#recurrance').recurCal('clear');
+}
+
+function test(when)
+{
+    switch(when)
+    {
+        case 'daily':
+            $('#recurrance').recurCal('load', {"days":"3","string":"Every 3 day(s)","start":"Thu, 02 May 2013 03:00:00 GMT","finish":"Thu, 02 May 2013 04:00:00 GMT"});
+            break;
+        case 'weekly':
+            $('#recurrance').recurCal('load', {"weeks":"3","days":["Tuesday", "Thursday", "Saturday"],"string":"Every 3 week(s) on Thursday","start":"Thu, 18 Jul 2013 13:30:00 UTC","finish":"Thu, 18 Jul 2013 14:15:00 UTC"});
+            break;
+        case 'monthly':
+            $('#recurrance').recurCal('load', {"date":"2","months":"1","string":"Day 2 of every 1 month(s)","start":"Fri, 15 Mar 2013 02:45:00 GMT","finish":"Fri, 15 Mar 2013 03:05:00 GMT"});
+            break;
+        case 'monthly2':
+            $('#recurrance').recurCal('load', {"ordinal":"third","day":"Tuesday","months":"1","string":"The third Tuesday of every 1 month(s)","start":"Wed, 02 Jan 2013 02:45:00 GMT","finish":"Wed, 02 Jan 2013 04:00:00 GMT"});
+            break;
+        case 'yearly':
+            $('#recurrance').recurCal('load', {"date":"25","month":"July","string":"Every July 25","start":"Wed, 02 Jan 2013 02:45:00 GMT","finish":"Wed, 02 Jan 2013 04:00:00 GMT"});
+            break;
+        case 'yearly2':
+            $('#recurrance').recurCal('load', {"ordinal":"third","day":"Tuesday","month":"June","string":"The third Tuesday of June","start":"Wed, 02 Jan 2013 02:45:00 GMT","finish":"Wed, 02 Jan 2013 04:00:00 GMT"});
+            break;
+        case 'test':
+            $('#recurrance').recurCal('load', {"ordinal":"first","day":"Sunday","months":"3","string":"The first Sunday of every 3 month(s)","after":false,"start":"Mon, 01 Jul 2013 04:59:00 GMT","finish":"Mon, 01 Jul 2013 07:00:00 GMT"});
+            break;
+    }
+    $('#testing').val(JSON.stringify($("#recurrance").recurCal("value")));
+}
+
+function Month()
+{
+    var today = new Date();
+    var last = new Date(today.getFullYear(), today.getMonth()+1 , 1, 23, 59);
+    last.setDate(last.getDate() -1);
+    
+    $('#begin').val(today.getFullYear() + '-' + (today.getMonth()+1) + '-01 00:00');
+    
+    $('#end').val(last.getFullYear() + '-' + (last.getMonth()+1) + '-' + last.getDate() + ' 23:59');
+}
+
+function fetch(when)
+{
+    var start = $('#begin').val();
+    var end = $('#end').val();
+    var next;
+    switch(when)
+    {
+        case 'value':
+            next = $("#recurrance").recurCal("fetch", $("#recurrance").recurCal("value"), start, end);
+            break;
+        case 'daily':
+            next = $('#recurrance').recurCal('fetch', {"days":"3","string":"Every 3 day(s)","start":"Thu, 02 May 2013 03:00:00 GMT","finish":"Thu, 02 May 2013 04:00:00 GMT"}, start, end);
+            break;
+        case 'weekly':
+            next = $('#recurrance').recurCal('fetch', {"weeks":"3","days":["Tuesday", "Thursday", "Saturday"],"string":"Every 3 week(s) on Thursday","start":"Thu, 18 Jul 2013 13:30:00 UTC","finish":"Thu, 18 Jul 2013 14:15:00 UTC"}, start, end);
+            break;
+        case 'monthly':
+            next = $('#recurrance').recurCal('fetch', {"date":"2","months":"1","string":"Day 2 of every 1 month(s)","start":"Fri, 15 Mar 2013 02:45:00 GMT","finish":"Fri, 15 Mar 2013 03:05:00 GMT"}, start, end);
+            break;
+        case 'monthly2':
+            next = $('#recurrance').recurCal('fetch', {"ordinal":"third","day":"Tuesday","months":"1","string":"The third Tuesday of every 1 month(s)","start":"Wed, 02 Jan 2013 02:45:00 GMT","finish":"Wed, 02 Jan 2013 04:00:00 GMT"}, start, end);
+            break;
+        case 'yearly':
+            next = $('#recurrance').recurCal('fetch', {"date":"25","month":"July","string":"Every July 25","start":"Wed, 02 Jan 2013 02:45:00 GMT","finish":"Wed, 02 Jan 2013 04:00:00 GMT"}, start, end);
+            break;
+        case 'yearly2':
+            next = $('#recurrance').recurCal('fetch', {"ordinal":"third","day":"Tuesday","month":"June","string":"The third Tuesday of June","start":"Wed, 02 Jan 2013 02:45:00 GMT","finish":"Wed, 02 Jan 2013 04:00:00 GMT"}, start, end);
+            break;
+        case 'test':
+            next = $('#recurrance').recurCal('fetch', {"ordinal":"first","day":"Sunday","months":"3","string":"The first Sunday of every 3 month(s)","after":false,"start":"Mon, 01 Jul 2013 04:59:00 GMT","finish":"Mon, 01 Jul 2013 07:00:00 GMT"}, start, end);
+            break;
+    }
+    $('#testing').val('');
+    for(var i=0, j=next.length; i<j; i++) {
+        $('#testing').val($('#testing').val() + 'Start: ' + next[i].start.toString() + '\n\tFinish:' + next[i].finish.toString() + '\n');
+    }
+}
+</script>
+</body>
+</html>
+
