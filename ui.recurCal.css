@@ -10,6 +10,12 @@
     margin: 15px 0 0 25px;
 }
 
+.recurCal-dateInput div input
+{
+    width: 200px;
+    display: inline;
+}
+
 .recurCal-picker 
 { 
     float: left;
